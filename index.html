@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sneha Gupta - Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #FDFBFF; /* A very light pastel lavender */
+            /* Custom dark purple cursor */
+            cursor: url("data:image/svg+xml,%3Csvg version='1.1' id='Layer_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' width='24px' height='24px' viewBox='0 0 24 24' style='enable-background:new 0 0 24 24;' xml:space='preserve'%3E%3Cpath fill='%234B0082' stroke='white' stroke-width='1' d='M3.9,2.4L20.2,9c0.8,0.3,0.8,1.4,0,1.7L3.9,17.3c-0.8,0.3-1.5-0.5-1.2-1.3L5,12L2.7,5.9C2.4,5.1,3.1,4.3,3.9,4.6z'/%3E%3C/svg%3E") 4 0, auto;
+        }
+        /* Brighter purple cursor for interactive elements */
+        a, button, .slider-controls {
+            cursor: url("data:image/svg+xml,%3Csvg version='1.1' id='Layer_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' width='24px' height='24px' viewBox='0 0 24 24' style='enable-background:new 0 0 24 24;' xml:space='preserve'%3E%3Cpath fill='%236A5ACD' stroke='white' stroke-width='1' d='M3.9,2.4L20.2,9c0.8,0.3,0.8,1.4,0,1.7L3.9,17.3c-0.8,0.3-1.5-0.5-1.2-1.3L5,12L2.7,5.9C2.4,5.1,3.1,4.3,3.9,4.6z'/%3E%3C/svg%3E") 4 0, pointer;
+        }
+        .section {
+            scroll-margin-top: 120px; /* Increased for floating nav */
+        }
+        .pastel-bg {
+            background-color: #F3F1FF; /* Light lavender for section backgrounds */
+        }
+        .pastel-accent {
+            color: #6A5ACD; /* A soft slate blue for accents */
+        }
+        .btn-primary {
+            background-color: #6A5ACD;
+            color: white;
+        }
+        .btn-primary:hover {
+            background-color: #5A4CAD;
+        }
+        .btn-secondary {
+            border-color: #6A5ACD;
+            color: #6A5ACD;
+        }
+        .btn-secondary:hover {
+            background-color: #F3F1FF;
+        }
+        /* --- Simple Profile Picture Frame with Outer Animation --- */
+        .profile-shape {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .profile-shape::before {
+            content: '';
+            position: absolute;
+            z-index: 0;
+            width: calc(100% + 16px);
+            height: calc(100% + 16px);
+            border: 2px dashed #6A5ACD;
+            border-radius: 1.75rem; /* Slightly larger than image */
+            animation: spin 40s linear infinite;
+        }
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .profile-image {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 1.5rem; /* rounded-3xl */
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .animated-bar {
+            position: absolute;
+            bottom: 0;
+            background-color: rgba(106, 90, 205, 0.1);
+            animation: riseAndFall infinite ease-in-out;
+            transform-origin: bottom;
+            border-top-left-radius: 4px;
+            border-top-right-radius: 4px;
+        }
+
+        @keyframes riseAndFall {
+            0% { transform: scaleY(0.05); }
+            50% { transform: scaleY(1); }
+            100% { transform: scaleY(0.05); }
+        }
+        
+        /* --- Next Level Timeline Animation --- */
+        .timeline-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 1rem; /* Corresponds to left-4 */
+            width: 2px;
+            height: 100%;
+            background-color: #e2e8f0; /* slate-300 */
+        }
+
+        .timeline-line {
+            position: absolute;
+            top: 0;
+            left: 1rem;
+            width: 2px;
+            height: 0;
+            background-color: #6A5ACD; /* pastel-accent */
+            transition: height 1s ease-out;
+        }
+
+        .timeline-item {
+            opacity: 0;
+            transform: translateX(30px);
+            transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+        }
+
+        .timeline-item.is-visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .timeline-dot {
+            transition: all 0.4s ease-in-out;
+        }
+
+        .timeline-item.is-visible .timeline-dot {
+            background-color: #6A5ACD;
+            transform: scale(1.25);
+            box-shadow: 0 0 0 4px rgba(106, 90, 205, 0.2);
+        }
+
+        .timeline-content {
+            position: relative;
+        }
+
+        .timeline-content::before {
+            content: '';
+            position: absolute;
+            top: 12px;
+            left: calc(-2.25rem + 1px);
+            width: 0;
+            height: 2px;
+            background-color: #6A5ACD;
+            transition: width 0.4s ease-out;
+            transition-delay: 0.5s;
+        }
+
+        .timeline-item.is-visible .timeline-content::before {
+            width: 1.5rem;
+        }
+
+        .timeline-card-content h3,
+        .timeline-card-content p {
+            opacity: 0;
+            transform: translateY(15px);
+            transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+        }
+
+        .timeline-item.is-visible .timeline-card-content h3 {
+            opacity: 1;
+            transform: translateY(0);
+            transition-delay: 0.8s;
+        }
+
+        .timeline-item.is-visible .timeline-card-content p:nth-of-type(1) {
+            opacity: 1;
+            transform: translateY(0);
+            transition-delay: 1s;
+        }
+
+        .timeline-item.is-visible .timeline-card-content p:nth-of-type(2) {
+            opacity: 1;
+            transform: translateY(0);
+            transition-delay: 1.2s;
+        }
+
+        /* --- Futuristic Navbar --- */
+        .futuristic-nav-link {
+            position: relative;
+            padding: 0.5rem 0.25rem;
+            color: #cbd5e1; /* slate-300 */
+            transition: color 0.3s ease;
+        }
+        .futuristic-nav-link:hover {
+            color: white;
+        }
+        .futuristic-nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: #8B5CF6; /* A brighter violet */
+            box-shadow: 0 0 10px #8B5CF6, 0 0 20px #8B5CF6;
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.4s ease-out;
+        }
+        .futuristic-nav-link:hover::after {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+
+        /* --- Dynamic Navbar Scroll Animation --- */
+        #main-header {
+            transition: top 0.4s ease-out, width 0.4s ease-out;
+        }
+        #main-header .nav-container {
+            transition: padding 0.4s ease-out, background-color 0.4s ease-out;
+        }
+        #main-header .logo-span {
+            transition: font-size 0.4s ease-out;
+        }
+
+        #main-header.scrolled {
+            top: 0.5rem;
+            width: 90%;
+            max-width: 1100px;
+        }
+        #main-header.scrolled .nav-container {
+            padding-top: 0.5rem;
+            padding-bottom: 0.5rem;
+            background-color: rgba(15, 23, 42, 0.75); /* bg-slate-900/75 */
+        }
+        #main-header.scrolled .logo-span {
+            font-size: 1.25rem; /* text-xl */
+        }
+
+        /* --- Project Slider --- */
+        /* For mobile: hide arrows, enable native scroll */
+        .slider-controls {
+            display: none;
+        }
+        #project-slider-container {
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scrollbar-width: none; /* For Firefox */
+            -ms-overflow-style: none;  /* For Internet Explorer and Edge */
+        }
+        #project-slider-container::-webkit-scrollbar {
+            display: none; /* For Chrome, Safari, and Opera */
+        }
+        
+        .project-slide {
+            flex: 0 0 90%;
+            scroll-snap-align: start;
+            scroll-margin-left: 1rem;
+        }
+         /* For desktop: enable arrows, JS-driven slider */
+        @media (min-width: 1024px) { /* Changed from md to lg for better spacing */
+            .slider-controls {
+                display: block;
+            }
+             #project-slider-container {
+                overflow-x: hidden;
+            }
+            .project-slide {
+                flex: 0 0 calc(100% / 3);
+                 scroll-snap-align: unset;
+            }
+        }
+
+        /* --- Social Icon Glow --- */
+        .social-link {
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+        .social-link:hover {
+            color: #6A5ACD; /* pastel-accent */
+            transform: scale(1.1);
+        }
+        .social-link:hover i {
+            filter: drop-shadow(0 0 8px rgba(106, 90, 205, 0.7));
+        }
+
+    </style>
+</head>
+<body class="text-slate-800">
+
+    <!-- Header -->
+    <header id="main-header" class="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[95%] max-w-5xl">
+        <div class="nav-container container mx-auto px-6 py-3 bg-slate-900/60 backdrop-blur-lg rounded-xl border border-slate-700/80 shadow-2xl shadow-slate-900/10">
+            <div class="flex justify-between items-center">
+                <a href="#" class="text-2xl font-bold text-white tracking-wider flex items-center gap-3">
+                    <i data-lucide="bar-chart-big" class="text-violet-400"></i>
+                    <span class="logo-span text-slate-200">SNEHA GUPTA</span>
+                </a>
+                <nav class="hidden md:flex space-x-8">
+                    <a href="#about" class="futuristic-nav-link">About</a>
+                    <a href="#skills" class="futuristic-nav-link">Skills</a>
+                    <a href="#projects" class="futuristic-nav-link">Projects</a>
+                    <a href="#education" class="futuristic-nav-link">Education</a>
+                    <a href="#contact" class="futuristic-nav-link">Contact</a>
+                </nav>
+                <button id="mobile-menu-button" class="md:hidden text-slate-200">
+                    <i data-lucide="menu" class="w-6 h-6"></i>
+                </button>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden mt-2 px-6 pb-4 bg-slate-900/80 backdrop-blur-lg rounded-xl border border-slate-700/80">
+            <a href="#about" class="block py-2 text-slate-300 hover:text-white">About</a>
+            <a href="#skills" class="block py-2 text-slate-300 hover:text-white">Skills</a>
+            <a href="#projects" class="block py-2 text-slate-300 hover:text-white">Projects</a>
+            <a href="#education" class="block py-2 text-slate-300 hover:text-white">Education</a>
+            <a href="#contact" class="block py-2 text-slate-300 hover:text-white">Contact</a>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section id="home" class="relative overflow-hidden w-full flex items-center justify-center min-h-screen">
+             <div id="hero-animation-container" class="absolute top-0 left-0 w-full h-full z-0"></div>
+             
+             <!-- Glassmorphism Card -->
+             <div class="relative z-10 container mx-auto px-6">
+                <div id="hero-card" class="bg-white/40 backdrop-blur-lg rounded-3xl p-8 md:p-12 shadow-2xl border border-white/30 transition-transform duration-300 ease-out">
+                    <div class="flex flex-col md:flex-row items-center justify-center gap-12 text-center md:text-left">
+                        <!-- Left Side: Text -->
+                        <div id="hero-text" class="md:w-1/2 transition-transform duration-300 ease-out">
+                            <h1 class="text-4xl md:text-5xl font-extrabold text-slate-900 leading-tight tracking-wide">
+                                SNEHA GUPTA
+                            </h1>
+                            <h2 class="text-2xl md:text-3xl font-semibold pastel-accent mt-2">
+                                B.Tech IT Graduate & Aspiring Developer
+                            </h2>
+                            <p class="mt-6 text-lg text-slate-700 max-w-xl mx-auto md:mx-0">
+                               A highly motivated and result-oriented B.Tech IT graduate with a solid foundation in Python, SQL, JavaScript, HTML and CSS. Seeking to leverage technical expertise and contribute to forward-thinking projects.
+                            </p>
+                        </div>
+                         <!-- Right Side: Image -->
+                        <div id="hero-image" class="w-64 h-80 md:w-72 md:h-96 order-first md:order-last flex items-center justify-center transition-transform duration-300 ease-out">
+                            <div class="profile-shape w-full h-full">
+                                 <img src="Portfolio.profile.picture.png" 
+                                     alt="Portrait of Sneha Gupta" 
+                                     class="profile-image">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+             </div>
+        </section>
+
+        <!-- About Me Section -->
+        <section id="about" class="section py-20 pastel-bg">
+            <div class="container mx-auto px-6">
+                <h2 class="text-3xl font-bold text-center text-slate-800 mb-12">About Me</h2>
+                <div class="flex flex-col md:flex-row items-center gap-10">
+                    <div class="md:w-full">
+                        <p class="text-lg text-slate-700 mb-4">
+                            I'm a technology enthusiast and a recent IT graduate with a passion for transforming raw data into compelling stories. My journey into the world of tech has equipped me with a robust skill set in Python, SQL, and JavaScript, allowing me to build bridges between complex data and actionable insights.
+                        </p>
+                        <p class="text-lg text-slate-700 mb-4">
+                            My project experience has been a fantastic playground for my curiosity. From developing intelligent chatbots that react to real-time data to diving deep into large datasets to uncover hidden trends, I love the challenge of making technology both smart and accessible. I believe the best solutions come from a blend of technical skill and a creative, user-focused approach.
+                        </p>
+                        <p class="text-lg text-slate-700">
+                           Beyond the screen, I'm a team player, a trait I've honed on the cricket and badminton courts. I thrive in collaborative environments and I'm always eager to learn and contribute to projects that make a real-world impact. My academic achievements, including the Kalpana Chawla Scholarship, are a testament to my dedication and drive.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Skills Section -->
+        <section id="skills" class="section py-20">
+            <div class="container mx-auto px-6">
+                <h2 class="text-3xl font-bold text-center text-slate-800 mb-16">My Skills</h2>
+                
+                <div class="max-w-4xl mx-auto">
+                    <!-- Technical Skills -->
+                    <h3 class="text-2xl font-semibold text-slate-700 mb-8 text-center md:text-left">Technical Expertise</h3>
+                    <div class="space-y-8">
+                        <!-- Skill Category: Languages -->
+                        <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 flex flex-col md:flex-row items-center gap-6">
+                            <img src="Programming_language.jpg" alt="Programming Languages" class="w-full md:w-1/3 h-48 object-cover rounded-lg">
+                            <div class="w-full md:w-2/3">
+                                <h4 class="text-xl font-bold pastel-accent mb-3">Languages</h4>
+                                <p class="text-slate-600 mb-4">Proficient in multiple programming languages, enabling me to tackle diverse challenges from data analysis to web development.</p>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="bg-indigo-100 text-indigo-800 text-sm font-semibold px-3 py-1 rounded-full">Python</span>
+                                    <span class="bg-indigo-100 text-indigo-800 text-sm font-semibold px-3 py-1 rounded-full">JavaScript</span>
+                                    <span class="bg-indigo-100 text-indigo-800 text-sm font-semibold px-3 py-1 rounded-full">SQL</span>
+                                    <span class="bg-indigo-100 text-indigo-800 text-sm font-semibold px-3 py-1 rounded-full">HTML/CSS</span>
+                                    <span class="bg-indigo-100 text-indigo-800 text-sm font-semibold px-3 py-1 rounded-full">C/C++</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Skill Category: Data Analysis & Visualization -->
+                        <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 flex flex-col md:flex-row items-center gap-6">
+                            <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2070&auto=format&fit=crop" alt="Data Analysis" class="w-full md:w-1/3 h-48 object-cover rounded-lg">
+                            <div class="w-full md:w-2/3">
+                                <h4 class="text-xl font-bold pastel-accent mb-3">Data Analysis & Visualization</h4>
+                                <p class="text-slate-600 mb-4">Experienced in the full data analysis pipeline, from cleaning and processing raw data to creating compelling visualizations that drive insights.</p>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="bg-indigo-100 text-indigo-800 text-sm font-semibold px-3 py-1 rounded-full">Pandas</span>
+                                    <span class="bg-indigo-100 text-indigo-800 text-sm font-semibold px-3 py-1 rounded-full">NumPy</span>
+                                    <span class="bg-indigo-100 text-indigo-800 text-sm font-semibold px-3 py-1 rounded-full">Matplotlib</span>
+                                    <span class="bg-indigo-100 text-indigo-800 text-sm font-semibold px-3 py-1 rounded-full">Seaborn</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Skill Category: Web Development & Tools -->
+                         <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 flex flex-col md:flex-row items-center gap-6">
+                            <img src="https://images.unsplash.com/photo-1547658719-da2b51169166?q=80&w=1964&auto=format&fit=crop" alt="Web Development Tools" class="w-full md:w-1/3 h-48 object-cover rounded-lg">
+                            <div class="w-full md:w-2/3">
+                                <h4 class="text-xl font-bold pastel-accent mb-3">Web Development & Tools</h4>
+                                <p class="text-slate-600 mb-4">Skilled in front-end web development and proficient with a variety of modern software and development tools to build efficient and scalable applications.</p>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="bg-indigo-100 text-indigo-800 text-sm font-semibold px-3 py-1 rounded-full">Bootstrap</span>
+                                    <span class="bg-indigo-100 text-indigo-800 text-sm font-semibold px-3 py-1 rounded-full">VS Code</span>
+                                    <span class="bg-indigo-100 text-indigo-800 text-sm font-semibold px-3 py-1 rounded-full">PyCharm</span>
+                                    <span class="bg-indigo-100 text-indigo-800 text-sm font-semibold px-3 py-1 rounded-full">SQL Workbench</span>
+                                    <span class="bg-indigo-100 text-indigo-800 text-sm font-semibold px-3 py-1 rounded-full">Jupyter Notebook</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Non-Technical Skills -->
+                    <h3 class="text-2xl font-semibold text-slate-700 mt-16 mb-8 text-center md:text-left">Professional Skills</h3>
+                     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+                        <!-- Skill Item -->
+                        <div class="flex flex-col items-center text-center p-6 bg-white rounded-lg shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
+                            <i data-lucide="users" class="w-12 h-12 pastel-accent mb-4"></i>
+                            <h3 class="text-xl font-semibold text-slate-800 mb-2">Teamwork & Collaboration</h3>
+                            <p class="text-slate-600">Effectively work with teams to achieve common goals and deliver high-quality results.</p>
+                        </div>
+                        <!-- Skill Item -->
+                        <div class="flex flex-col items-center text-center p-6 bg-white rounded-lg shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
+                            <i data-lucide="lightbulb" class="w-12 h-12 pastel-accent mb-4"></i>
+                            <h3 class="text-xl font-semibold text-slate-800 mb-2">Problem Solving</h3>
+                             <p class="text-slate-600">Strong analytical skills to identify issues, analyze them, and devise effective solutions.</p>
+                        </div>
+                         <!-- Skill Item -->
+                        <div class="flex flex-col items-center text-center p-6 bg-white rounded-lg shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
+                            <i data-lucide="messages-square" class="w-12 h-12 pastel-accent mb-4"></i>
+                            <h3 class="text-xl font-semibold text-slate-800 mb-2">Communication</h3>
+                            <p class="text-slate-600">Clearly articulate ideas and findings to both technical and non-technical audiences.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="projects" class="section pastel-bg py-20">
+            <div class="container mx-auto px-6">
+                <h2 class="text-3xl font-bold text-center text-slate-800 mb-4">Featured Projects</h2>
+                <p class="text-center text-slate-600 mb-12 max-w-2xl mx-auto">Here's a selection of projects I've worked on. I enjoy turning complex problems into beautiful and intuitive designs.</p>
+
+                <div class="relative">
+                     <!-- Slider Controls -->
+                    <button id="slide-left" class="slider-controls absolute top-1/2 -left-4 md:-left-6 transform -translate-y-1/2 z-20 bg-white/50 backdrop-blur-sm rounded-full p-2 shadow-lg hover:bg-white transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed">
+                        <i data-lucide="chevron-left" class="w-6 h-6 text-slate-800"></i>
+                    </button>
+                    <button id="slide-right" class="slider-controls absolute top-1/2 -right-4 md:-right-6 transform -translate-y-1/2 z-20 bg-white/50 backdrop-blur-sm rounded-full p-2 shadow-lg hover:bg-white transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed">
+                        <i data-lucide="chevron-right" class="w-6 h-6 text-slate-800"></i>
+                    </button>
+
+                    <!-- Slider Container -->
+                    <div id="project-slider-container" class="overflow-hidden">
+                        <div id="project-slider" class="flex transition-transform duration-500 ease-in-out">
+                             <!-- Project Slide 1 -->
+                            <div class="project-slide px-4">
+                                <div class="bg-white rounded-lg overflow-hidden shadow-lg transform hover:-translate-y-2 transition-transform duration-300 group h-full flex flex-col">
+                                    <img src="https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?q=80&w=2070&auto=format&fit=crop" alt="Netflix Analysis Project" class="w-full h-48 object-cover">
+                                    <div class="p-6 flex flex-col flex-grow">
+                                        <h3 class="text-2xl font-bold text-slate-800 mb-2">Netflix vs TV-Show Data Analysis</h3>
+                                        <p class="text-slate-600 mb-4 flex-grow">
+                                            Performed EDA on Kaggle datasets to identify trends. Cleaned data using Python (Pandas, NumPy) and created visualizations with Matplotlib & Seaborn to compare content distribution and ratings.
+                                        </p>
+                                        <div class="flex flex-wrap gap-2 mb-4">
+                                            <span class="bg-indigo-100 text-indigo-800 text-sm font-semibold px-3 py-1 rounded-full">Python</span>
+                                            <span class="bg-indigo-100 text-indigo-800 text-sm font-semibold px-3 py-1 rounded-full">Pandas</span>
+                                            <span class="bg-indigo-100 text-indigo-800 text-sm font-semibold px-3 py-1 rounded-full">Matplotlib</span>
+                                        </div>
+                                        <a href="https://github.com/Snehagupta111/Netflix-EDA-Project" target="_blank" rel="noopener noreferrer" class="inline-flex items-center pastel-accent font-semibold group-hover:text-indigo-800 transition-colors duration-300 mt-auto">
+                                            View on GitHub <i data-lucide="arrow-right" class="ml-2 w-5 h-5"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Project Slide 2 -->
+                            <div class="project-slide px-4">
+                                <div class="bg-white rounded-lg overflow-hidden shadow-lg transform hover:-translate-y-2 transition-transform duration-300 group h-full flex flex-col">
+                                    <img src="E-Commerce Sales Analysis.jpg" alt="E-Commerce Sales Analysis Project" class="w-full h-48 object-cover">
+                                    <div class="p-6 flex flex-col flex-grow">
+                                        <h3 class="text-2xl font-bold text-slate-800 mb-2">E-Commerce Sales Analysis</h3>
+                                        <p class="text-slate-600 mb-4 flex-grow">
+                                            Analyzed customer, order, and product data to find sales trends and purchasing behavior. Cleaned data using SQL and Python, and developed visualizations to track revenue and top-selling products.
+                                        </p>
+                                        <div class="flex flex-wrap gap-2 mb-4">
+                                            <span class="bg-indigo-100 text-indigo-800 text-sm font-semibold px-3 py-1 rounded-full">SQL</span>
+                                            <span class="bg-indigo-100 text-indigo-800 text-sm font-semibold px-3 py-1 rounded-full">Python</span>
+                                            <span class="bg-indigo-100 text-indigo-800 text-sm font-semibold px-3 py-1 rounded-full">Seaborn</span>
+                                        </div>
+                                        <a href="https://github.com/Snehagupta111/Ecommerce-Data-Analysis" target="_blank" rel="noopener noreferrer" class="inline-flex items-center pastel-accent font-semibold group-hover:text-indigo-800 transition-colors duration-300 mt-auto">
+                                            View Analysis <i data-lucide="arrow-right" class="ml-2 w-5 h-5"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Project Slide 3 -->
+                            <div class="project-slide px-4">
+                                <div class="bg-white rounded-lg overflow-hidden shadow-lg transform hover:-translate-y-2 transition-transform duration-300 group h-full flex flex-col">
+                                    <img src="Weather_app.jpg" alt="Weather Chatbot Project" class="w-full h-48 object-cover">
+                                    <div class="p-6 flex flex-col flex-grow">
+                                        <h3 class="text-2xl font-bold text-slate-800 mb-2">Weather & Clothing Chatbot Advisor</h3>
+                                        <p class="text-slate-600 mb-4 flex-grow">
+                                            Developed a chatbot web app for clothing recommendations based on live weather data from an API. Implemented an interactive UI for seamless conversation and real-time outfit suggestions.
+                                        </p>
+                                        <div class="flex flex-wrap gap-2 mb-4">
+                                            <span class="bg-indigo-100 text-indigo-800 text-sm font-semibold px-3 py-1 rounded-full">JavaScript</span>
+                                            <span class="bg-indigo-100 text-indigo-800 text-sm font-semibold px-3 py-1 rounded-full">HTML/CSS</span>
+                                            <span class="bg-indigo-100 text-indigo-800 text-sm font-semibold px-3 py-1 rounded-full">API</span>
+                                        </div>
+                                        <a href="https://snehagupta111.github.io/Weather-and-Clothing-Chat-bot-Advisor/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center pastel-accent font-semibold group-hover:text-indigo-800 transition-colors duration-300 mt-auto">
+                                            Try The Chatbot <i data-lucide="arrow-right" class="ml-2 w-5 h-5"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Project Slide 4 -->
+                            <div class="project-slide px-4">
+                                <div class="bg-white rounded-lg overflow-hidden shadow-lg transform hover:-translate-y-2 transition-transform duration-300 group h-full flex flex-col">
+                                    <img src="Tic-Tac-Toe.jpg" alt="Tic Tac Toe Project" class="w-full h-48 object-cover">
+                                    <div class="p-6 flex flex-col flex-grow">
+                                        <h3 class="text-2xl font-bold text-slate-800 mb-2">Tic Tac Toe Game</h3>
+                                        <p class="text-slate-600 mb-4 flex-grow">
+                                            Developed an interactive Tic-Tac-Toe game with two-player functionality and real-time win/draw detection. Designed a responsive interface for smooth gameplay across all devices.
+                                        </p>
+                                        <div class="flex flex-wrap gap-2 mb-4">
+                                            <span class="bg-indigo-100 text-indigo-800 text-sm font-semibold px-3 py-1 rounded-full">HTML</span>
+                                            <span class="bg-indigo-100 text-indigo-800 text-sm font-semibold px-3 py-1 rounded-full">CSS</span>
+                                            <span class="bg-indigo-100 text-indigo-800 text-sm font-semibold px-3 py-1 rounded-full">JavaScript</span>
+                                        </div>
+                                        <a href="https://snehagupta111.github.io/Tic-tac-toe-/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center pastel-accent font-semibold group-hover:text-indigo-800 transition-colors duration-300 mt-auto">
+                                            Play The Game <i data-lucide="arrow-right" class="ml-2 w-5 h-5"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Project Slide 5 -->
+                            <div class="project-slide px-4">
+                                <div class="bg-white rounded-lg overflow-hidden shadow-lg transform hover:-translate-y-2 transition-transform duration-300 group h-full flex flex-col">
+                                    <img src="Quizz_App.jpg" alt="Quiz App Project" class="w-full h-48 object-cover">
+                                    <div class="p-6 flex flex-col flex-grow">
+                                        <h3 class="text-2xl font-bold text-slate-800 mb-2">Interactive Quiz App</h3>
+                                        <p class="text-slate-600 mb-4 flex-grow">
+                                            Built a quiz web app with multiple-choice questions, instant feedback, score tracking, and a timer for an engaging user experience.
+                                        </p>
+                                        <div class="flex flex-wrap gap-2 mb-4">
+                                            <span class="bg-indigo-100 text-indigo-800 text-sm font-semibold px-3 py-1 rounded-full">HTML</span>
+                                            <span class="bg-indigo-100 text-indigo-800 text-sm font-semibold px-3 py-1 rounded-full">CSS</span>
+                                            <span class="bg-indigo-100 text-indigo-800 text-sm font-semibold px-3 py-1 rounded-full">JavaScript</span>
+                                        </div>
+                                        <a href="https://snehagupta111.github.io/The-quiz-app/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center pastel-accent font-semibold group-hover:text-indigo-800 transition-colors duration-300 mt-auto">
+                                            Take The Quiz <i data-lucide="arrow-right" class="ml-2 w-5 h-5"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Education Section -->
+        <section id="education" class="section py-20">
+            <div class="container mx-auto px-6">
+                <h2 class="text-3xl font-bold text-center text-slate-800 mb-16">My Education Journey</h2>
+                <div class="relative max-w-2xl mx-auto timeline-container">
+                    <div class="timeline-line"></div>
+                    <!-- Education Item 1 -->
+                    <div class="timeline-item relative pl-12 mb-12">
+                        <div class="absolute top-1 -left-0.5 z-10">
+                            <div class="w-5 h-5 bg-white border-2 border-slate-300 rounded-full timeline-dot"></div>
+                        </div>
+                        <div class="timeline-content">
+                            <div class="bg-white rounded-lg shadow-md p-6 transform hover:scale-105 transition-transform duration-300 timeline-card-content">
+                                <h3>B.Tech Information Technology</h3>
+                                <p>University Institute of Technology, Shimla</p>
+                                <p>Oct 2021 - July 2025 | CGPA: 8.56/10</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Education Item 2 -->
+                    <div class="timeline-item relative pl-12 mb-12">
+                         <div class="absolute top-1 -left-0.5 z-10">
+                            <div class="w-5 h-5 bg-white border-2 border-slate-300 rounded-full timeline-dot"></div>
+                        </div>
+                        <div class="timeline-content">
+                             <div class="bg-white rounded-lg shadow-md p-6 transform hover:scale-105 transition-transform duration-300 timeline-card-content">
+                                <h3>12th Grade</h3>
+                                <p>Himachal Public Sen Sec school, Sujanpur Tira</p>
+                                <p>April 2020 - March 2021 | Percentage: 94.20%</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Education Item 3 -->
+                    <div class="timeline-item relative pl-12 mb-12">
+                         <div class="absolute top-1 -left-0.5 z-10">
+                            <div class="w-5 h-5 bg-white border-2 border-slate-300 rounded-full timeline-dot"></div>
+                        </div>
+                        <div class="timeline-content">
+                             <div class="bg-white rounded-lg shadow-md p-6 transform hover:scale-105 transition-transform duration-300 timeline-card-content">
+                                <h3>10th Grade</h3>
+                                <p>D.A.V. Public Sen Sec school, Alampur</p>
+                                <p>April 2018 - March 2019 | Percentage: 83.3%</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Contact Section -->
+        <section id="contact" class="section pastel-bg py-20 overflow-hidden">
+            <div class="container mx-auto px-6">
+                 <div class="max-w-4xl mx-auto bg-white p-8 md:p-12 rounded-2xl shadow-2xl flex flex-col md:flex-row items-center gap-12">
+                    <!-- Left Side: Text and CTA -->
+                    <div class="md:w-1/2 text-center md:text-left">
+                        <h2 class="text-3xl md:text-4xl font-bold text-slate-800 mb-4">Let's Connect!</h2>
+                        <p class="text-slate-600 text-lg mb-8">
+                            Have a project in mind or just want to chat about data and technology? I'd love to hear from you. Let's create something amazing together.
+                        </p>
+                         <a href="mailto:iamsnehagupta11@gmail.com" class="inline-flex items-center justify-center font-bold py-3 px-6 rounded-lg transition-transform transform hover:scale-105 duration-300 shadow-lg text-lg btn-primary mb-10">
+                            <i data-lucide="send" class="w-5 h-5 mr-2"></i>
+                            Send me an Email
+                        </a>
+                         <div class="flex justify-center md:justify-start space-x-6">
+                            <a href="https://www.linkedin.com/in/sneha-gupta-6a329324b/" target="_blank" rel="noopener noreferrer" class="social-link flex items-center text-slate-500">
+                                <i data-lucide="linkedin" class="w-8 h-8"></i>
+                                <span class="ml-2 font-semibold">LinkedIn</span>
+                            </a>
+                            <a href="https://github.com/Snehagupta111" target="_blank" rel="noopener noreferrer" class="social-link flex items-center text-slate-500">
+                                <i data-lucide="github" class="w-8 h-8"></i>
+                                <span class="ml-2 font-semibold">GitHub</span>
+                            </a>
+                        </div>
+                    </div>
+                    <!-- Right Side: Animated SVG -->
+                    <div class="md:w-1/2 flex items-center justify-center">
+                         <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" class="w-full max-w-xs">
+                            <defs>
+                                <filter id="glow">
+                                    <feGaussianBlur stdDeviation="2.5" result="coloredBlur"></feGaussianBlur>
+                                    <feMerge>
+                                        <feMergeNode in="coloredBlur"></feMergeNode>
+                                        <feMergeNode in="SourceGraphic"></feMergeNode>
+                                    </feMerge>
+                                </filter>
+                            </defs>
+                            <g filter="url(#glow)" stroke="#6A5ACD" stroke-width="1.5">
+                                <circle cx="100" cy="100" r="80" fill="none" stroke-dasharray="4" stroke-opacity="0.3"/>
+                                <circle cx="100" cy="100" r="50" fill="#F3F1FF"/>
+                                <circle cx="100" cy="100" r="48" fill="white" stroke-width="1"/>
+                                <path d="M100 52 V 20" stroke-width="2"/>
+                                <path d="M100 148 V 180" stroke-width="2"/>
+                                <path d="M52 100 H 20" stroke-width="2"/>
+                                <path d="M148 100 H 180" stroke-width="2"/>
+                                
+                                <circle cx="100" cy="20" r="4" fill="#6A5ACD">
+                                    <animateTransform attributeName="transform" type="rotate" from="0 100 100" to="360 100 100" dur="15s" repeatCount="indefinite"/>
+                                </circle>
+                                 <circle cx="20" cy="100" r="4" fill="#6A5ACD">
+                                     <animateTransform attributeName="transform" type="rotate" from="0 100 100" to="360 100 100" dur="20s" repeatCount="indefinite" begin="-5s"/>
+                                </circle>
+                                 <circle cx="100" cy="180" r="4" fill="#6A5ACD">
+                                     <animateTransform attributeName="transform" type="rotate" from="0 100 100" to="360 100 100" dur="12s" repeatCount="indefinite" begin="-10s"/>
+                                </circle>
+                                <circle cx="180" cy="100" r="4" fill="#6A5ACD">
+                                    <animateTransform attributeName="transform" type="rotate" from="0 100 100" to="360 100 100" dur="18s" repeatCount="indefinite" begin="-2s"/>
+                                </circle>
+        
+                                <g stroke-opacity="0.5">
+                                   <path d="M100,52 Q 135,65 145,90" fill="none"/>
+                                   <path d="M148,100 Q 135,135 100,148" fill="none"/>
+                                   <path d="M52,100 Q 65,65 100,52" fill="none"/>
+                                </g>
+                            </g>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200">
+        <div class="container mx-auto px-6 py-6 text-center text-slate-500">
+            <p>&copy; 2025 Sneha Gupta. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Scroll to top button -->
+    <button id="scrollToTopBtn" class="fixed bottom-5 right-5 hidden p-3 rounded-full btn-primary focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-opacity-75 transition-opacity duration-300">
+        <i data-lucide="arrow-up" class="w-6 h-6"></i>
+    </button>
+
+    <script>
+        lucide.createIcons();
+
+        // Mobile menu toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Close mobile menu when a link is clicked
+        document.querySelectorAll('#mobile-menu a, .nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                if(!mobileMenu.classList.contains('hidden')) {
+                   mobileMenu.classList.add('hidden');
+                }
+            });
+        });
+
+
+        // Scroll to top button
+        const scrollToTopBtn = document.getElementById('scrollToTopBtn');
+        window.onscroll = function() {
+            if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+                scrollToTopBtn.style.display = "block";
+            } else {
+                scrollToTopBtn.style.display = "none";
+            }
+        };
+
+        scrollToTopBtn.addEventListener('click', function() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // Hero background animation
+        document.addEventListener('DOMContentLoaded', () => {
+            const container = document.getElementById('hero-animation-container');
+            if (container) {
+                const barCount = 30; // Number of bars
+                for (let i = 0; i < barCount; i++) {
+                    const bar = document.createElement('div');
+                    bar.classList.add('animated-bar');
+
+                    const width = Math.random() * 25 + 10; // Width between 10px and 35px
+                    const heightMultiplier = Math.random() * 0.6 + 0.2; // Max height between 20% and 80%
+                    
+                    bar.style.width = `${width}px`;
+                    bar.style.height = `${heightMultiplier * 100}%`;
+                    bar.style.left = `${Math.random() * 100}%`;
+
+                    const animationDuration = Math.random() * 8 + 4; // Duration between 4s and 12s
+                    const animationDelay = Math.random() * 5; // Delay up to 5s
+                    
+                    bar.style.animationDuration = `${animationDuration}s`;
+                    bar.style.animationDelay = `-${animationDelay}s`;
+
+                    container.appendChild(bar);
+                }
+            }
+            
+            // Interactive hero section effect
+            const heroSection = document.getElementById('home');
+            const heroText = document.getElementById('hero-text');
+            const heroImage = document.getElementById('hero-image');
+            
+            if (heroSection && heroText && heroImage) {
+                heroSection.addEventListener('mousemove', (e) => {
+                    const { clientX, clientY } = e;
+                    const { offsetWidth, offsetHeight } = heroSection;
+                    
+                    const xPos = (clientX / offsetWidth - 0.5) * 2;
+                    const yPos = (clientY / offsetHeight - 0.5) * 2;
+
+                    const textMoveX = xPos * -15;
+                    const textMoveY = yPos * -10;
+                    const imageMoveX = xPos * 15;
+                    const imageMoveY = yPos * 10;
+
+                    heroText.style.transform = `translate(${textMoveX}px, ${textMoveY}px)`;
+                    heroImage.style.transform = `translate(${imageMoveX}px, ${imageMoveY}px)`;
+                });
+
+                heroSection.addEventListener('mouseleave', () => {
+                     heroText.style.transform = `translate(0,0)`;
+                     heroImage.style.transform = `translate(0,0)`;
+                });
+            }
+
+            // --- Advanced Animated timeline ---
+            const timelineItems = document.querySelectorAll('.timeline-item');
+            const timelineLine = document.querySelector('.timeline-line');
+            const timelineContainer = document.querySelector('.timeline-container');
+
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.3
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                    }
+                });
+            }, observerOptions);
+
+            timelineItems.forEach(item => {
+                observer.observe(item);
+            });
+            
+            // Animate timeline line draw on scroll
+            if(timelineLine && timelineContainer) {
+                window.addEventListener('scroll', () => {
+                    const { top } = timelineContainer.getBoundingClientRect();
+                    const containerHeight = timelineContainer.offsetHeight;
+                    const windowHeight = window.innerHeight;
+
+                    let visibleHeight = windowHeight - top;
+                    if (visibleHeight < 0) visibleHeight = 0;
+                    if (visibleHeight > containerHeight) visibleHeight = containerHeight;
+                    
+                    timelineLine.style.height = `${visibleHeight}px`;
+                });
+            }
+
+            // --- Dynamic Navbar Scroll ---
+            const header = document.getElementById('main-header');
+            if (header) {
+                window.addEventListener('scroll', () => {
+                    if (window.scrollY > 50) {
+                        header.classList.add('scrolled');
+                    } else {
+                        header.classList.remove('scrolled');
+                    }
+                });
+            }
+
+            // --- Project Slider ---
+            const slider = document.getElementById('project-slider');
+            const leftButton = document.getElementById('slide-left');
+            const rightButton = document.getElementById('slide-right');
+
+            if (slider && leftButton && rightButton) {
+                const slides = Array.from(slider.children);
+                if (slides.length > 0) {
+                    let currentIndex = 0;
+                    const slidesInView = 3; // For desktop
+                    const totalSlides = slides.length;
+                    const maxIndex = totalSlides > slidesInView ? totalSlides - slidesInView : 0;
+
+                    const updateSliderPosition = () => {
+                         // The percentage to move is based on showing 3 slides at a time.
+                        const offset = currentIndex * (100 / slidesInView);
+                        slider.style.transform = `translateX(-${offset}%)`;
+                    };
+
+                    const updateButtons = () => {
+                         if (totalSlides <= slidesInView) {
+                            leftButton.style.display = 'none';
+                            rightButton.style.display = 'none';
+                            return;
+                        }
+                        leftButton.disabled = currentIndex === 0;
+                        rightButton.disabled = currentIndex >= maxIndex;
+                    };
+
+                    rightButton.addEventListener('click', () => {
+                        if (currentIndex < maxIndex) {
+                            currentIndex++;
+                            updateSliderPosition();
+                            updateButtons();
+                        }
+                    });
+
+                    leftButton.addEventListener('click', () => {
+                        if (currentIndex > 0) {
+                            currentIndex--;
+                            updateSliderPosition();
+                            updateButtons();
+                        }
+                    });
+
+                    // Initial state
+                    updateButtons();
+                }
+            }
+        });
+
+    </script>
+</body>
+</html>
+
