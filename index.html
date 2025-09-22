@@ -11,12 +11,6 @@
         body {
             font-family: 'Poppins', sans-serif;
             background-color: #FDFBFF; /* A very light pastel lavender */
-            /* Custom dark purple cursor */
-            cursor: url("data:image/svg+xml,%3Csvg version='1.1' id='Layer_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' width='24px' height='24px' viewBox='0 0 24 24' style='enable-background:new 0 0 24 24;' xml:space='preserve'%3E%3Cpath fill='%234B0082' stroke='white' stroke-width='1' d='M3.9,2.4L20.2,9c0.8,0.3,0.8,1.4,0,1.7L3.9,17.3c-0.8,0.3-1.5-0.5-1.2-1.3L5,12L2.7,5.9C2.4,5.1,3.1,4.3,3.9,4.6z'/%3E%3C/svg%3E") 4 0, auto;
-        }
-        /* Brighter purple cursor for interactive elements */
-        a, button, .slider-controls {
-            cursor: url("data:image/svg+xml,%3Csvg version='1.1' id='Layer_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' width='24px' height='24px' viewBox='0 0 24 24' style='enable-background:new 0 0 24 24;' xml:space='preserve'%3E%3Cpath fill='%236A5ACD' stroke='white' stroke-width='1' d='M3.9,2.4L20.2,9c0.8,0.3,0.8,1.4,0,1.7L3.9,17.3c-0.8,0.3-1.5-0.5-1.2-1.3L5,12L2.7,5.9C2.4,5.1,3.1,4.3,3.9,4.6z'/%3E%3C/svg%3E") 4 0, pointer;
         }
         .section {
             scroll-margin-top: 120px; /* Increased for floating nav */
@@ -849,18 +843,19 @@
                 const slides = Array.from(slider.children);
                 if (slides.length > 0) {
                     let currentIndex = 0;
-                    const slidesInView = 3; // For desktop
+                    let slidesInView = window.innerWidth < 1024 ? 1 : 3;
+
                     const totalSlides = slides.length;
-                    const maxIndex = totalSlides > slidesInView ? totalSlides - slidesInView : 0;
+                    let maxIndex = totalSlides > slidesInView ? totalSlides - slidesInView : 0;
 
                     const updateSliderPosition = () => {
-                         // The percentage to move is based on showing 3 slides at a time.
-                        const offset = currentIndex * (100 / slidesInView);
-                        slider.style.transform = `translateX(-${offset}%)`;
+                        const slideWidth = slides[0].offsetWidth;
+                        const offset = currentIndex * slideWidth;
+                        slider.style.transform = `translateX(-${offset}px)`;
                     };
 
                     const updateButtons = () => {
-                         if (totalSlides <= slidesInView) {
+                        if (totalSlides <= slidesInView) {
                             leftButton.style.display = 'none';
                             rightButton.style.display = 'none';
                             return;
@@ -868,6 +863,13 @@
                         leftButton.disabled = currentIndex === 0;
                         rightButton.disabled = currentIndex >= maxIndex;
                     };
+                    
+                    const handleResize = () => {
+                        slidesInView = window.innerWidth < 1024 ? 1 : 3;
+                        maxIndex = totalSlides > slidesInView ? totalSlides - slidesInView : 0;
+                        updateButtons();
+                        updateSliderPosition();
+                    }
 
                     rightButton.addEventListener('click', () => {
                         if (currentIndex < maxIndex) {
@@ -884,9 +886,11 @@
                             updateButtons();
                         }
                     });
+                    
+                    window.addEventListener('resize', handleResize);
 
                     // Initial state
-                    updateButtons();
+                    handleResize();
                 }
             }
         });
